@@ -12,20 +12,20 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = PostAdapter()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val recycler = binding.recycler
-        recycler.setHasFixedSize(true)
-        recycler.layoutManager = LinearLayoutManager(activity)
-        recycler.adapter = adapter
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.adapter = PostAdapter(PostProvider.postList)
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+
     }
 
     companion object {

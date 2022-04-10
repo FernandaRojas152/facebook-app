@@ -4,9 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class PostAdapter : RecyclerView.Adapter<ViewHolder>(){
-    private val posts = ArrayList<Post>()
-
+class PostAdapter (private val posts: List<Post>): RecyclerView.Adapter<ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.postrow, parent, false)
@@ -15,13 +13,8 @@ class PostAdapter : RecyclerView.Adapter<ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val post = posts[position]
-
-        holder.user.text= post.user
-        holder.location.text= post.location
-        holder.date.text= post.date
-        holder.description.text= post.caption
-        holder.imagePost.setImageBitmap(post.pic)
+        val itemPost = posts[position]
+        holder.render(itemPost)
     }
 
     override fun getItemCount(): Int {

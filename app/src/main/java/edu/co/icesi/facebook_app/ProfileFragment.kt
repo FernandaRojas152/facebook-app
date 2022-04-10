@@ -36,6 +36,10 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+        binding.logout.setOnClickListener{
+            val intent= Intent(context,Login ::class.java)
+            startActivity(intent)
+        }
         return binding.root
     }
 

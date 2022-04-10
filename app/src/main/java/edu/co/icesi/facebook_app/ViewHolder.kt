@@ -12,6 +12,11 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var date: TextView = itemView.findViewById(R.id.date)
     var description: TextView = itemView.findViewById(R.id.description)
 
-    init {
+    fun render(post: Post){
+        user.text= post.user
+        location.text= post.location
+        imagePost.setImageURI(post.pic)
+        date.text= post.date
+        description.text= post.caption
     }
 }
