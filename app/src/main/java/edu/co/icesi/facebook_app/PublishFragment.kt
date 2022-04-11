@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -14,14 +15,21 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import edu.co.icesi.facebook_app.databinding.FragmentPublishBinding
+import java.io.File
+import java.util.*
 
 class PublishFragment : Fragment() {
     private var _binding: FragmentPublishBinding? = null
     private val binding get() = _binding!!
+
+    var file: File? =null
+    private var URI:String = ""
 
     var listener: OnNewPostListener? = null
 
@@ -99,13 +107,30 @@ class PublishFragment : Fragment() {
 
         binding.camera.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            file = File("${activity?.getExternalFilesDir(null)}/photo.png")
+            val uri =
+                FileProvider.getUriForFile(requireContext(), context?.packageName!!, file!!)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+
             launcher.launch(intent)
         }
 
         binding.publishPost.setOnClickListener {
-
+            val location = binding.city.selectedItem.toString()
+            val caption = binding.caption.text.toString()
+            val date= getCurrentDate().toString()
+            val uri = Uri.parse(URI)
+            listener?.let {
+                val post = Post(uri,"",caption,location, date)
+                it.onNewPost(post)
+                Toast.makeText(activity,"Published", Toast.LENGTH_SHORT).show()
+            }
         }
         return binding.root
+    }
+
+    fun getCurrentDate(): Date {
+        return Calendar.getInstance().time
     }
 
     fun onResult(result: ActivityResult) {
