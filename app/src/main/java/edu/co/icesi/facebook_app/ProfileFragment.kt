@@ -24,16 +24,12 @@ class ProfileFragment : Fragment() {
         binding.editProfile.setOnClickListener{
             binding.editPhoto.visibility= View.VISIBLE
             binding.accept.visibility= View.VISIBLE
-            binding.editPhoto.visibility= View.INVISIBLE
-
+            binding.editPhoto.setOnClickListener{
+                requestPermission()
+            }
             binding.accept.setOnClickListener{
                 binding.editPhoto.visibility= View.INVISIBLE
                 binding.accept.visibility= View.INVISIBLE
-                binding.editPhoto.visibility= View.VISIBLE
-
-                binding.editPhoto.setOnClickListener{
-                    requestPermission()
-                }
             }
         }
         binding.logout.setOnClickListener{

@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import edu.co.icesi.facebook_app.databinding.FragmentPublishBinding
@@ -28,7 +29,7 @@ class PublishFragment : Fragment() {
     private var _binding: FragmentPublishBinding? = null
     private val binding get() = _binding!!
 
-    var file: File? =null
+    //var file: File? =null
     private var URI:String = ""
 
     var listener: OnNewPostListener? = null
@@ -103,15 +104,10 @@ class PublishFragment : Fragment() {
             requestPermission()
         }
 
-        val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ::onResult)
+        val launcher = registerForActivityResult(StartActivityForResult(), ::onResult)
 
         binding.camera.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            file = File("${activity?.getExternalFilesDir(null)}/photo.png")
-            val uri =
-                FileProvider.getUriForFile(requireContext(), context?.packageName!!, file!!)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-
             launcher.launch(intent)
         }
 
@@ -121,7 +117,7 @@ class PublishFragment : Fragment() {
             val date= getCurrentDate().toString()
             val uri = Uri.parse(URI)
             listener?.let {
-                val post = Post(uri,"",caption,location, date)
+                val post = Post(uri,"",caption,location)
                 it.onNewPost(post)
                 Toast.makeText(activity,"Published", Toast.LENGTH_SHORT).show()
             }

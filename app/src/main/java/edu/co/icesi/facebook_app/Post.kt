@@ -7,5 +7,5 @@ data class Post(
     var user : String,
     var caption : String,
     var location : String,
-    var date : String
+    //var date : String
 )
